@@ -1,0 +1,9 @@
+const DB_KEY="cyclecare_v1_data";
+function defaultData(){return{profile:{name:"",typicalCycle:28},records:{},createdAt:new Date().toISOString()}}
+function loadData(){try{return JSON.parse(localStorage.getItem(DB_KEY))||defaultData()}catch(e){return defaultData()}}
+function saveData(d){localStorage.setItem(DB_KEY,JSON.stringify(d))}
+let data=loadData();
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function getRecord(date=todayKey()){return data.records[date]||{}}
+function setRecord(date,record){data.records[date]={...getRecord(date),...record};saveData(data)}
+function deleteAllData(){localStorage.removeItem(DB_KEY);data=defaultData()}

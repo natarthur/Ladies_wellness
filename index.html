@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8e4d72">
+<meta name="description" content="CycleCare — private menstrual cycle and women's wellness tracker.">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+<title>CycleCare</title>
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="brand">CycleCare</div>
+    <div class="subtitle">Your private cycle & wellness companion</div>
+  </div>
+  <button class="icon-btn" id="lockBtn" aria-label="Settings">⚙️</button>
+</header>
+
+<div class="mode-gate" id="modeGate"><div class="mode-box">
+<div class="mode-logo">🌸</div><h1>Welcome to CycleCare</h1>
+<p>Choose what you want CycleCare to focus on. You can change this anytime.</p>
+<div class="mode-options">
+<button class="mode-option" data-mode="cycle"><b>🌸 Cycle Syncing</b><span>Period, symptoms, energy and personal patterns.</span></button>
+<button class="mode-option" data-mode="peri"><b>🌙 Perimenopause & Menopause</b><span>Hot flushes, sleep, mood and brain fog.</span></button>
+<button class="mode-option" data-mode="wellness"><b>💚 General Wellness</b><span>Energy, habits, sleep and nutrition — no period required.</span></button>
+<button class="mode-option" data-mode="tcc"><b>❤️ Trying to Conceive</b><span>Cycle observations and fertility-focused tracking.</span></button>
+<button class="mode-option" data-mode="birthcontrol"><b>🛡️ Hormonal Birth Control</b><span>Bleeding, symptoms and medication without assuming a natural cycle.</span></button>
+</div><p class="privacy-note">🔒 V1.1 stores records locally on this device unless you export them.</p>
+</div></div><main id="app">
+<section class="view active" id="homeView">
+  <div class="mode-banner card"><div><small>YOUR MODE</small><b id="modeLabel">Cycle Syncing</b></div><button class="text-btn" id="changeMode">Change</button></div><div class="hero card">
+    <div class="hero-label">TODAY</div>
+    <div class="cycle-number" id="cycleDay">Cycle Day —</div>
+    <div class="phase" id="cyclePhase">Start by recording your last period</div>
+    <div class="next-period">Next period: <strong id="nextPeriod">—</strong></div>
+    <div class="progress"><span id="cycleProgress"></span></div>
+  </div>
+
+  <div class="energy-card card"><div><small>DAILY ENERGY CHECK-IN</small><h2>How is your energy today?</h2></div><div class="energy-buttons"><button data-energy="High">⚡ High</button><button data-energy="Balanced">🙂 Balanced</button><button data-energy="Low">🌿 Low</button></div><p id="energyMessage">A 10-second check-in keeps the app useful even without cycle data.</p></div>
+<div class="micro-card card" id="microHabit"></div><div class="quick-grid">
+    <button class="quick" data-open="track"><span>🩸</span>Period</button>
+    <button class="quick" data-open="track"><span>🩺</span>Symptoms</button>
+    <button class="quick" data-open="track"><span>😊</span>Mood</button>
+    <button class="quick" data-open="track"><span>💊</span>Medication</button>
+  </div>
+
+  <div class="section-head"><h2>Today</h2><button class="text-btn" data-open="track">Add</button></div>
+  <div class="card summary-card" id="todaySummary">Nothing recorded today yet.</div>
+
+  <div class="section-head"><h2>Upcoming</h2></div>
+  <div class="card list-card">
+    <div><span>🌸</span><div><b>Fertile window</b><small id="fertileText">Record a few cycles for an estimate.</small></div></div>
+    <div><span>🔔</span><div><b>Reminders</b><small>Notifications can be enabled from Settings.</small></div></div>
+  </div>
+</section>
+
+<section class="view" id="calendarView">
+  <div class="section-head"><h1>Calendar</h1><div class="month-controls"><button id="prevMonth">‹</button><b id="monthTitle"></b><button id="nextMonth">›</button></div></div>
+  <div class="card calendar-card">
+    <div class="weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+    <div class="calendar" id="calendar"></div>
+    <div class="legend"><span>🩸 Period</span><span>● Tracked</span><span>🌸 Fertile estimate</span></div>
+  </div>
+  <div class="card" id="selectedDay"><b>Select a day</b><p>Tap a date to view or add notes.</p></div>
+</section>
+
+<section class="view" id="trackView">
+  <div class="section-head"><h1>Track</h1><span class="date-pill" id="trackDate"></span></div>
+  <form class="card form" id="trackForm">
+    <label>Period <select id="flow"><option value="">No period</option><option>Spotting</option><option>Light</option><option>Medium</option><option>Heavy</option></select></label>
+    <label>Symptoms <div class="chips" id="symptomChips"></div></label>
+    <label>Mood <div class="chips" id="moodChips"></div></label>
+    <div class="two-col">
+      <label>Sleep (hours)<input type="number" id="sleep" min="0" max="24" step=".5" placeholder="7.5"></label>
+      <label>Water (glasses)<input type="number" id="water" min="0" max="30" placeholder="6"></label>
+    </div>
+    <label>Exercise / activity<input id="exercise" maxlength="120" placeholder="e.g. 30 min walk"></label>
+    <label>Medication / notes<textarea id="notes" rows="3" maxlength="500" placeholder="Optional private note"></textarea></label>
+    <button class="primary" type="submit">Save today's record</button>
+  </form>
+</section>
+
+<section class="view" id="insightsView">
+  <div class="section-head"><h1>Insights</h1></div>
+  <div class="stats-grid">
+    <div class="stat card"><b id="avgCycle">—</b><span>Average cycle</span></div>
+    <div class="stat card"><b id="avgPeriod">—</b><span>Average period</span></div>
+    <div class="stat card"><b id="shortCycle">—</b><span>Shortest cycle</span></div>
+    <div class="stat card"><b id="longCycle">—</b><span>Longest cycle</span></div>
+  </div>
+  <div class="card">
+    <h2>Your observations</h2>
+    <div id="insightText" class="insight-text">Record at least one period to start building your personal cycle history.</div>
+  </div>
+  <div class="card">
+    <h2>Recent records</h2>
+    <div id="recentRecords"></div>
+  </div>
+</section>
+
+<section class="view" id="learnView">
+  <div class="section-head"><h1>Learn</h1></div><div class="filter-row" id="learnFilters"></div>
+  <div class="learn-grid" id="learnGrid"></div>
+</section>
+
+<section class="view" id="settingsView">
+  <div class="section-head"><h1>Settings & Privacy</h1></div>
+  <div class="card settings">
+    <h2>Profile & Life Stage</h2><p class="muted">Current focus: <b id="settingsModeLabel">Cycle Syncing</b></p><button class="secondary" id="settingsMode">Change mode</button>
+    <label>Name (optional)<input id="profileName" placeholder="Your name"></label>
+    <label>Typical cycle length (days)<input id="typicalCycle" type="number" min="15" max="90" value="28"></label>
+    <button class="primary" id="saveSettings">Save settings</button>
+  </div>
+  <div class="card settings">
+    <h2>Privacy</h2>
+    <p>Your records are stored locally on this device in V1.1. No account is required.</p>
+    <button class="secondary" id="exportData">Export my data</button>
+    <button class="danger" id="deleteData">Delete all data</button>
+  </div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav active" data-view="homeView">🏠<span>Home</span></button>
+  <button class="nav" data-view="calendarView">📅<span>Calendar</span></button>
+  <button class="nav" data-view="trackView">➕<span>Track</span></button>
+  <button class="nav" data-view="insightsView">📊<span>Insights</span></button>
+  <button class="nav" data-view="learnView">🌸<span>Learn</span></button>
+</nav>
+
+<div class="modal hidden" id="articleModal"><div class="modal-box"><button class="close" id="closeArticle">×</button><div id="articleContent"></div></div></div>
+<div class="modal hidden" id="lockModal"><div class="modal-box"><h2>Private mode</h2><p>V1.1 keeps health records on this device. For a stronger lock, use your phone's app-lock feature.</p><button class="primary" id="closeLock">Continue</button></div></div>
+<script src="data/education.js"></script>
+<script src="js/cycle-engine.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
